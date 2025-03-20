@@ -4,7 +4,7 @@ import type React from "react"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
-import { MessageSquare, ShoppingCart, Wrench } from "lucide-react"
+import { MessageSquare, ChartNoAxesCombined, Plane } from "lucide-react"
 
 interface ChatbotSelectorProps {
   selectedBot: string
@@ -29,16 +29,16 @@ export const botTypes: BotType[] = [
   },
   {
     id: "support",
-    name: "Customer Support",
-    description: "Help with orders, returns, and product information",
-    icon: <ShoppingCart className="h-5 w-5" />,
+    name: "Analytics Assistant",
+    description: "Analyze your business data and provide insights",
+    icon: <ChartNoAxesCombined className="h-5 w-5" />,
     webhookUrlKey: "supportWebhookUrl",
   },
   {
     id: "technical",
-    name: "Technical Help",
-    description: "Technical assistance for troubleshooting and setup",
-    icon: <Wrench className="h-5 w-5" />,
+    name: "Travel Planner Assistant",
+    description: "Tailoring your travel tour with our expert advice",
+    icon: <Plane className="h-5 w-5" />,
     webhookUrlKey: "technicalWebhookUrl",
   },
 ]
