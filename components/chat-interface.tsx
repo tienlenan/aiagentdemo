@@ -17,9 +17,9 @@ interface ChatInterfaceProps {
 export function ChatInterface({ selectedBot }: ChatInterfaceProps) {
   // Store webhook URLs for each bot type
   const [webhookUrls, setWebhookUrls] = useState<Record<string, string>>({
-    generalWebhookUrl: "",
-    supportWebhookUrl: "",
-    technicalWebhookUrl: "",
+    generalWebhookUrl: process.env.NEXT_PUBLIC_GENERAL_WEBHOOK_URL || "",
+    analyticsWebhookUrl: process.env.NEXT_PUBLIC_ANALYTICS_WEBHOOK_URL || "",
+    travelPlannerWebhookUrl: process.env.NEXT_PUBLIC_TRAVEL_PLANNER_WEBHOOK_URL || "",
   })
 
   const [showSettings, setShowSettings] = useState(false)
@@ -43,11 +43,9 @@ export function ChatInterface({ selectedBot }: ChatInterfaceProps) {
         webhookUrl: currentWebhookUrl,
         target: '#n8n-chat-box',
         mode: 'fullscreen',
-
       });
     }
-
-  }, [webhookUrls])
+  }, [webhookUrls, selectedBot])
 
   return (
     <div className="flex flex-col h-full">

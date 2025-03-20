@@ -32,14 +32,14 @@ export const botTypes: BotType[] = [
     name: "Analytics Assistant",
     description: "Analyze your business data and provide insights",
     icon: <ChartNoAxesCombined className="h-5 w-5" />,
-    webhookUrlKey: "supportWebhookUrl",
+    webhookUrlKey: "analyticsWebhookUrl",
   },
   {
     id: "technical",
     name: "Travel Planner Assistant",
     description: "Tailoring your travel tour with our expert advice",
     icon: <Plane className="h-5 w-5" />,
-    webhookUrlKey: "technicalWebhookUrl",
+    webhookUrlKey: "travelPlannerWebhookUrl",
   },
 ]
 
