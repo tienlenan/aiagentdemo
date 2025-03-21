@@ -39,7 +39,7 @@ export default function Home() {
 
       {/* Main content */}
       <div className="flex-1 p-4 md:p-8">
-        <div className="w-full max-w-3xl mx-auto h-[calc(100vh-2rem)]">
+        <div className="w-full max-w-6xl mx-auto h-[calc(100vh-2rem)]">
           {isMobile && <h1 className="text-2xl font-bold mb-6 text-center mt-8">PYS AI Chatbot</h1>}
           <ChatInterface selectedBot={selectedBot} />
         </div>
