@@ -43,6 +43,10 @@ export function ChatInterface({ selectedBot }: ChatInterfaceProps) {
         webhookUrl: currentWebhookUrl,
         target: '#n8n-chat-box',
         mode: 'fullscreen',
+        initialMessages: [
+          'Hi there! 👋',
+          'How can I assist you today?'
+        ],
       });
     }
   }, [webhookUrls, selectedBot])
