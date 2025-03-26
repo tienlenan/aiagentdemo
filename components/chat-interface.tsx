@@ -43,14 +43,12 @@ export function ChatInterface({ selectedBot }: ChatInterfaceProps) {
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
-        (position) => {
+        async (position) => {
           const { latitude, longitude } = position.coords
           // Reverse geocoding to get location name
-          fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`)
-            .then(response => response.json())
-            .then(data => {
-              setUserLocation(data.address?.city || data.address?.town || data.address?.state || 'your location')
-            })
+          const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`);
+          const data = await response.json();
+          setUserLocation(data.address?.city || data.address?.town || data.address?.state || 'your location');
         },
         (error) => {
           console.error('Error getting location:', error)
@@ -64,8 +62,38 @@ export function ChatInterface({ selectedBot }: ChatInterfaceProps) {
     if (currentWebhookUrl) {
       if (selectedBot === "travelPlanner") {
         const initialMessages = userLocation
-          ? [`Xin chào bạn, mình là PYS Chatbot AI.`, `Dường như bạn đang truy cập từ ${userLocation}! 👋.`, 'Sau đây là một số tour du lịch phù hợp với bạn. Nếu có yêu cầu khác hãy hỏi mình nhé!']
-          : []
+          ? ['Xin chào bạn, mình là PYS Chatbot AI.', `Dường như bạn đang truy cập từ ${userLocation}! 👋.`, 'Sau đây là một số tour du lịch phù hợp với bạn. Nếu có yêu cầu khác hãy hỏi mình nhé!']
+          : ['Xin chào bạn, mình là PYS Chatbot AI. Hãy hỏi mình bất cứ điều gì về các tour du lịch của PYS nhé!,']
+
+        // Fetch travel recommendations from https://cms-api.pystravel.vn/web/v2/tours/search?searchKey=userLocation
+        fetch(`https://cms-api.pystravel.vn/web/v2/tours/search?searchKey=${userLocation}`)
+          .then(response => response.json())
+          .then(data => {
+            // Add tour recommendations to initial messages
+            const tourMessage = data.results.map((tour: { title: string, description: string }) =>
+              `• **${tour.title}**: ${tour.description} \n`
+            ).slice(0, 5).join('\n');
+
+            initialMessages.push(tourMessage);
+            initialMessages.push('\n\nNếu bạn có yêu cầu khác hãy hỏi mình nhé!');
+
+            createChat({
+              webhookUrl: currentWebhookUrl,
+              target: '#n8n-chat-box',
+              mode: 'fullscreen',
+              initialMessages,
+            });
+          })
+          .catch(error => {
+            console.error('Error fetching tours:', error);
+            // Create chat even if tour fetch fails
+            createChat({
+              webhookUrl: currentWebhookUrl,
+              target: '#n8n-chat-box',
+              mode: 'fullscreen',
+              initialMessages,
+            });
+          });
 
         createChat({
           webhookUrl: currentWebhookUrl,
