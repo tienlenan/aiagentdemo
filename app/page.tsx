@@ -9,7 +9,7 @@ import { Menu } from "lucide-react"
 import { useMediaQuery } from "@/hooks/use-media-query"
 
 export default function Home() {
-  const [selectedBot, setSelectedBot] = useState("general")
+  const [selectedBot, setSelectedBot] = useState("travelPlanner")
   const isMobile = useMediaQuery("(max-width: 768px)")
 
   return (

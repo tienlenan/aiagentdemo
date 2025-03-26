@@ -20,12 +20,19 @@ type BotType = {
 }
 
 export const botTypes: BotType[] = [
+  // {
+  //   id: "general",
+  //   name: "General Assistant",
+  //   description: "General purpose assistant for everyday questions",
+  //   icon: <MessageSquare className="h-5 w-5" />,
+  //   webhookUrlKey: "generalWebhookUrl",
+  // },
   {
-    id: "general",
-    name: "General Assistant",
-    description: "General purpose assistant for everyday questions",
-    icon: <MessageSquare className="h-5 w-5" />,
-    webhookUrlKey: "generalWebhookUrl",
+    id: "travelPlanner",
+    name: "Travel Planner Assistant",
+    description: "Tailoring your travel tour with our expert advice",
+    icon: <Plane className="h-5 w-5" />,
+    webhookUrlKey: "travelPlannerWebhookUrl",
   },
   {
     id: "support",
@@ -34,13 +41,7 @@ export const botTypes: BotType[] = [
     icon: <ChartNoAxesCombined className="h-5 w-5" />,
     webhookUrlKey: "analyticsWebhookUrl",
   },
-  {
-    id: "technical",
-    name: "Travel Planner Assistant",
-    description: "Tailoring your travel tour with our expert advice",
-    icon: <Plane className="h-5 w-5" />,
-    webhookUrlKey: "travelPlannerWebhookUrl",
-  },
+
 ]
 
 export function ChatbotSelector({ selectedBot, onSelectBot }: ChatbotSelectorProps) {

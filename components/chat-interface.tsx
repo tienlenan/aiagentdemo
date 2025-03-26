@@ -37,19 +37,53 @@ export function ChatInterface({ selectedBot }: ChatInterfaceProps) {
     }))
   }
 
+  const [userLocation, setUserLocation] = useState<string | null>(null)
+
+  // Get user location
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords
+          // Reverse geocoding to get location name
+          fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`)
+            .then(response => response.json())
+            .then(data => {
+              setUserLocation(data.address?.city || data.address?.town || data.address?.state || 'your location')
+            })
+        },
+        (error) => {
+          console.error('Error getting location:', error)
+          setUserLocation(null)
+        }
+      )
+    }
+  }, [])
+
   useEffect(() => {
     if (currentWebhookUrl) {
+      if (selectedBot === "travelPlanner") {
+        const initialMessages = userLocation
+          ? [`Xin chào bạn, mình là PYS Chatbot AI.`, `Dường như bạn đang truy cập từ ${userLocation}! 👋.`, 'Sau đây là một số tour du lịch phù hợp với bạn. Nếu có yêu cầu khác hãy hỏi mình nhé!']
+          : []
+
+        createChat({
+          webhookUrl: currentWebhookUrl,
+          target: '#n8n-chat-box',
+          mode: 'fullscreen',
+          initialMessages,
+        });
+        return;
+      }
+
       createChat({
         webhookUrl: currentWebhookUrl,
         target: '#n8n-chat-box',
         mode: 'fullscreen',
-        initialMessages: [
-          'Hi there! 👋',
-          'How can I assist you today?'
-        ],
+        initialMessages: ['Xin chào bạn, mình là PYS Chatbot AI.', 'Hãy hỏi tôi bất cứ điều gì!'],
       });
     }
-  }, [webhookUrls, selectedBot])
+  }, [webhookUrls, selectedBot, userLocation])
 
   return (
     <div className="flex flex-col h-full">
